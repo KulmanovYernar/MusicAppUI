@@ -16,7 +16,7 @@ import com.example.musicappui.ui_components.BrowserItem
 @Composable
 fun Home() {
     val categories = listOf("Hits", "Happy", "Workout", "Running", "TGIF", "Yoga")
-    val grouped = listOf<String>("New Release", "Favorites", "Top  Rated").groupBy { it[0] }
+    val grouped = listOf("New Release", "Favorites", "Top  Rated").groupBy { it[0] }
     LazyColumn {
         grouped.forEach {
             stickyHeader {
