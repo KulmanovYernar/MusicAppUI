@@ -1,4 +1,4 @@
-package com.example.musicappui
+package com.example.musicappui.ui_components
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -34,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.musicappui.Screen
 import com.example.musicappui.navigation.NavGraph
-import com.example.musicappui.ui_components.AccountDialog
+import com.example.musicappui.screensInBottom
+import com.example.musicappui.screensInDrawer
 import com.example.musicappui.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
