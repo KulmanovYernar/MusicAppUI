@@ -2,10 +2,11 @@ package com.example.musicappui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -17,20 +18,43 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.musicappui.navigation.NavGraph
+import com.example.musicappui.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView() {
-
+    val viewModel: MainViewModel = viewModel()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val currentScreen = remember {
+        viewModel.currentScreen.value
+    }
+
+    val title = remember {
+        mutableStateOf(currentScreen.title)
+    }
+
+    val isDialogOpen = remember {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -51,11 +75,33 @@ fun MainView() {
                     }
                 }
             )
+        },
+        drawerContent = {
+            LazyColumn(modifier = Modifier.padding(16.dp)) {
+                items(screensInDrawer) { item ->
+                    DrawerItem(selected = currentRoute == item.dRoute, item = item) {
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                        if (item.dRoute == "add_account") {
+                            isDialogOpen.value = true
+                        } else {
+                            navController.navigate(item.dRoute)
+                            title.value = item.dTitle
+                        }
+                    }
+
+                }
+            }
         }
     ) {
-        Column(modifier = Modifier.padding(it)) {
+        NavGraph(
+            navController = navController,
+            viewModel = viewModel,
+            paddingValues = it
+        )
 
-        }
+        AccountDialog(isDialogOpen = isDialogOpen)
     }
 }
 
@@ -64,7 +110,7 @@ fun DrawerItem(
     selected: Boolean,
     item: Screen.DrawerScreen,
     onDrawerItemClicked: () -> Unit
-){
+) {
     val background = if (selected) Color.DarkGray else Color.White
     Row(
         Modifier
@@ -77,7 +123,7 @@ fun DrawerItem(
         Icon(
             painter = painterResource(id = item.icon),
             contentDescription = item.dTitle,
-            Modifier.padding(end = 8.dp, top = 4.dp)
+            modifier = Modifier.padding(end = 8.dp, top = 4.dp)
         )
         Text(
             text = item.dTitle,

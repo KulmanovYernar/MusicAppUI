@@ -18,7 +18,7 @@ import com.example.musicappui.ui.theme.MusicAppUITheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             MusicAppUITheme {
                 Surface(
