@@ -30,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.musicappui.navigation.NavGraph
+import com.example.musicappui.ui_components.AccountDialog
 import com.example.musicappui.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
