@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.musicappui.Screen
 import com.example.musicappui.ui_components.AccountView
+import com.example.musicappui.ui_components.Subscription
 import com.example.musicappui.viewmodel.MainViewModel
 
 @Composable
@@ -20,7 +21,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController as NavHostController,
-        startDestination = Screen.DrawerScreen.AddAccount.dRoute,
+        startDestination = Screen.DrawerScreen.Account.dRoute,
         modifier = Modifier.padding(paddingValues)
     ){
         composable(Screen.DrawerScreen.Account.route){
@@ -29,6 +30,10 @@ fun NavGraph(
 
 
         composable(Screen.DrawerScreen.Subscription.route){
+            Subscription()
+        }
+
+        composable(Screen.DrawerScreen.AddAccount.route){
 
         }
     }

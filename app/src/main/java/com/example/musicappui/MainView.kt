@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -61,7 +62,7 @@ fun MainView() {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(title = {
-                Text(text = "Home")
+                Text(text = title.value)
             },
                 navigationIcon = {
                     IconButton(onClick = {
@@ -112,12 +113,12 @@ fun DrawerItem(
     item: Screen.DrawerScreen,
     onDrawerItemClicked: () -> Unit
 ) {
-    val background = if (selected) Color.DarkGray else Color.White
+    val background = if (selected) Color.LightGray else Color.White
     Row(
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 16.dp)
-            .background(background)
+            .background(background, shape = RoundedCornerShape(4.dp))
             .clickable {
                 onDrawerItemClicked()
             }) {
