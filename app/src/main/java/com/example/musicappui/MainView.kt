@@ -1,13 +1,17 @@
 package com.example.musicappui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -58,6 +62,41 @@ fun MainView() {
         mutableStateOf(false)
     }
 
+    val bottomBar: @Composable () -> Unit = {
+        if (currentScreen is Screen.DrawerScreen || currentScreen == Screen.BottomScreen.Home) {
+            BottomNavigation(Modifier.wrapContentSize()) {
+                screensInBottom.forEach { item ->
+                    val isSelected = currentRoute == item.bRoute
+                    Log.d(
+                        "Navigation",
+                        "Item: ${item.bTitle}, Current Route: $currentRoute, Is Selected: $isSelected"
+                    )
+                    val tint = if (isSelected) Color.White else Color.Black
+                    BottomNavigationItem(
+                        selected = currentRoute == item.bRoute,
+                        onClick = {
+                            navController.navigate(item.bRoute)
+                            title.value = item.bTitle
+                        },
+                        icon = {
+                            Icon(
+                                tint = tint,
+                                contentDescription = item.bTitle,
+                                painter = painterResource(id = item.icon)
+                            )
+                        },
+                        label = {
+                            Text(text = item.bTitle, color = tint)
+                        },
+                        selectedContentColor = Color.White,
+                        unselectedContentColor = Color.Black
+                    )
+                }
+            }
+        }
+    }
+
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -78,6 +117,7 @@ fun MainView() {
                 }
             )
         },
+        bottomBar = bottomBar,
         drawerContent = {
             LazyColumn(modifier = Modifier.padding(16.dp)) {
                 items(screensInDrawer) { item ->
